@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EV Engineering Intelligence Dashboard</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#4361ee" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="EV Dashboard" />
+  <meta name="description" content="30-minute daily EV & automotive engineering intelligence dashboard" />
+  <link rel="manifest" href="manifest.json" />
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/roadmap.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <div class="logo-text">
+          <span class="logo-title">EV Intelligence</span>
+          <span class="logo-sub">30 min/day dashboard</span>
+        </div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">&#9776;</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Daily Learning</div>
+      <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+        <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-item" data-tab="daily-report" onclick="switchTab('daily-report')">
+        <span class="nav-icon">📰</span><span class="nav-label">Daily Report</span>
+      </button>
+      <button class="nav-item" data-tab="quiz" onclick="switchTab('quiz')">
+        <span class="nav-icon">🧠</span><span class="nav-label">Quiz & Flashcards</span>
+      </button>
+      <div class="nav-section-label">Progress & Skills</div>
+      <button class="nav-item" data-tab="skills" onclick="switchTab('skills')">
+        <span class="nav-icon">📈</span><span class="nav-label">Skill Tracker</span>
+      </button>
+      <button class="nav-item" data-tab="roadmap" onclick="switchTab('roadmap')">
+        <span class="nav-icon">🗺️</span><span class="nav-label">24-Month Roadmap</span>
+      </button>
+      <div class="nav-section-label">Germany Focus</div>
+      <button class="nav-item" data-tab="germany" onclick="switchTab('germany')">
+        <span class="nav-icon">🇩🇪</span><span class="nav-label">Germany Prep</span>
+      </button>
+      <button class="nav-item" data-tab="companies" onclick="switchTab('companies')">
+        <span class="nav-icon">🏭</span><span class="nav-label">Target Companies</span>
+      </button>
+      <div class="nav-section-label">Resources</div>
+      <button class="nav-item" data-tab="sources" onclick="switchTab('sources')">
+        <span class="nav-icon">🔗</span><span class="nav-label">Learning Sources</span>
+      </button>
+      <button class="nav-item" data-tab="weekly" onclick="switchTab('weekly')">
+        <span class="nav-icon">📅</span><span class="nav-label">Weekly Deep Dive</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="streak-badge">
+        <span>🔥</span>
+        <span id="streakCount">0</span>
+        <span>day streak</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ─── TAB: DASHBOARD ─── -->
+    <section class="tab-panel active" id="tab-dashboard">
+      <header class="page-header">
+        <div>
+          <h1 class="page-title">Good <span id="timeOfDay">Morning</span>, Engineer! ⚡</h1>
+          <p class="page-subtitle" id="todayDate">Loading date...</p>
+        </div>
+        <div class="header-actions">
+          <div class="timer-widget" id="timerWidget">
+            <span class="timer-icon">⏱️</span>
+            <span id="timerDisplay">30:00</span>
+            <button class="btn-timer" onclick="toggleTimer()" id="timerBtn">Start</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Daily Progress Bar -->
+      <div class="daily-progress-card">
+        <div class="progress-header">
+          <span>Today's 30-Minute Learning Plan</span>
+          <span id="progressPercent">0% complete</span>
+        </div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="dailyProgressBar" style="width:0%"></div>
+        </div>
+        <div class="progress-segments">
+          <div class="seg seg-news" onclick="jumpToSegment('news')">📰 News<br/><small>5 min</small></div>
+          <div class="seg seg-tech" onclick="jumpToSegment('tech')">💡 EE Breakthroughs<br/><small>5 min</small></div>
+          <div class="seg seg-tools" onclick="jumpToSegment('tools')">🔧 Tools<br/><small>5 min</small></div>
+          <div class="seg seg-concept" onclick="jumpToSegment('concept')">📚 Deep Concept<br/><small>5 min</small></div>
+          <div class="seg seg-germany" onclick="jumpToSegment('germany-watch')">🇩🇪 Germany<br/><small>5 min</small></div>
+          <div class="seg seg-career" onclick="jumpToSegment('career')">🚀 Career<br/><small>5 min</small></div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value" id="statDaysLearned">0</div>
+          <div class="stat-label">Days Learned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statSkillsTracked">12</div>
+          <div class="stat-label">Skills Tracked</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statQuizScore">—</div>
+          <div class="stat-label">Last Quiz Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statCurrentMonth">M1</div>
+          <div class="stat-label">Roadmap Month</div>
+        </div>
+      </div>
+
+      <!-- Quick Module Cards -->
+      <div class="module-grid">
+        <div class="module-card card-news" onclick="switchTab('daily-report')">
+          <div class="module-icon">📰</div>
+          <div class="module-title">Today's EV & Auto News</div>
+          <div class="module-desc">Top 5 stories from IEEE, SAE, Bosch, VW, BMW & more</div>
+          <div class="module-time">5 min read</div>
+        </div>
+        <div class="module-card card-tech" onclick="switchTab('daily-report'); setTimeout(()=>jumpToSegment('tech'),300)">
+          <div class="module-icon">⚡</div>
+          <div class="module-title">EE Breakthroughs</div>
+          <div class="module-desc">Latest in power electronics, BMS, motor drives</div>
+          <div class="module-time">5 min read</div>
+        </div>
+        <div class="module-card card-tools" onclick="switchTab('daily-report'); setTimeout(()=>jumpToSegment('tools'),300)">
+          <div class="module-icon">🔧</div>
+          <div class="module-title">Tool of the Day</div>
+          <div class="module-desc">CANoe, MATLAB, AUTOSAR, Python — rotating daily</div>
+          <div class="module-time">5 min explore</div>
+        </div>
+        <div class="module-card card-concept" onclick="switchTab('daily-report'); setTimeout(()=>jumpToSegment('concept'),300)">
+          <div class="module-icon">📚</div>
+          <div class="module-title">Deep Technical Concept</div>
+          <div class="module-desc">One concept explained simply every day</div>
+          <div class="module-time">5 min study</div>
+        </div>
+        <div class="module-card card-germany" onclick="switchTab('germany')">
+          <div class="module-icon">🇩🇪</div>
+          <div class="module-title">Germany Industry Watch</div>
+          <div class="module-desc">Jobs, salaries, regulations, master's requirements</div>
+          <div class="module-time">5 min read</div>
+        </div>
+        <div class="module-card card-career" onclick="switchTab('skills')">
+          <div class="module-icon">🚀</div>
+          <div class="module-title">Career Builder</div>
+          <div class="module-desc">Skills, certs, projects, interview prep</div>
+          <div class="module-time">5 min action</div>
+        </div>
+      </div>
+
+      <!-- Today's Action Item -->
+      <div class="action-card" id="actionCard">
+        <div class="action-header">
+          <span class="action-badge">⚡ Today's 15-Min Action Item</span>
+          <button class="btn-secondary" onclick="refreshActionItem()">Refresh</button>
+        </div>
+        <div class="action-content" id="actionContent">Loading...</div>
+      </div>
+    </section>
+
+    <!-- ─── TAB: DAILY REPORT ─── -->
+    <section class="tab-panel" id="tab-daily-report">
+      <header class="page-header">
+        <div>
+          <h1 class="page-title">📰 Daily Engineering Intelligence Report</h1>
+          <p class="page-subtitle" id="reportDate">Loading...</p>
+        </div>
+        <button class="btn-primary" onclick="generateReport()">Generate Today's Report</button>
+      </header>
+      <div id="reportContainer">
+        <div class="report-placeholder">
+          <div class="placeholder-icon">📋</div>
+          <p>Click "Generate Today's Report" to produce your personalized daily brief.</p>
+          <button class="btn-primary large" onclick="generateReport()">Generate Report ⚡</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── TAB: QUIZ & FLASHCARDS ─── -->
+    <section class="tab-panel" id="tab-quiz">
+      <header class="page-header">
+        <h1 class="page-title">🧠 Quiz & Flashcards</h1>
+        <p class="page-subtitle">Spaced repetition — active recall — weekly quizzes</p>
+      </header>
+
+      <div class="quiz-mode-selector">
+        <button class="mode-btn active" onclick="setQuizMode('flashcard')" id="modeFlashcard">Flashcards</button>
+        <button class="mode-btn" onclick="setQuizMode('quiz')" id="modeQuiz">Daily Quiz</button>
+        <button class="mode-btn" onclick="setQuizMode('weekly')" id="modeWeekly">Weekly Assessment</button>
+      </div>
+
+      <!-- Flashcard Mode -->
+      <div id="flashcardMode">
+        <div class="flashcard-controls">
+          <select id="flashcardDomain" onchange="loadFlashcards()">
+            <option value="all">All Domains</option>
+            <option value="ev">Electric Vehicles</option>
+            <option value="bms">Battery & BMS</option>
+            <option value="autosar">AUTOSAR</option>
+            <option value="can">Vehicle Networks (CAN/LIN)</option>
+            <option value="safety">Functional Safety ISO 26262</option>
+            <option value="power">Power Electronics</option>
+            <option value="embedded">Embedded Systems</option>
+            <option value="cybersecurity">Automotive Cybersecurity</option>
+          </select>
+          <span id="flashcardProgress">Card 1 of 20</span>
+        </div>
+        <div class="flashcard-wrapper" onclick="flipCard()" id="flashcardWrapper">
+          <div class="flashcard" id="flashcard">
+            <div class="flashcard-front" id="cardFront">
+              <div class="card-domain" id="cardDomain">BMS</div>
+              <div class="card-question" id="cardQuestion">Loading flashcard...</div>
+              <div class="card-hint">Click to reveal answer</div>
+            </div>
+            <div class="flashcard-back" id="cardBack">
+              <div class="card-answer" id="cardAnswer"></div>
+              <div class="card-explanation" id="cardExplanation"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flashcard-actions">
+          <button class="btn-wrong" onclick="rateCard('again')">🔴 Again</button>
+          <button class="btn-hard" onclick="rateCard('hard')">🟡 Hard</button>
+          <button class="btn-good" onclick="rateCard('good')">🟢 Good</button>
+          <button class="btn-easy" onclick="rateCard('easy')">⚡ Easy</button>
+        </div>
+        <div class="spaced-rep-info">
+          <span id="dueToday">Due today: calculating...</span>
+          <button class="btn-secondary" onclick="loadFlashcards()">Next Card ›</button>
+        </div>
+      </div>
+
+      <!-- Quiz Mode -->
+      <div id="quizMode" style="display:none">
+        <div id="quizContainer"></div>
+      </div>
+
+      <!-- Weekly Assessment -->
+      <div id="weeklyMode" style="display:none">
+        <div id="weeklyContainer"></div>
+      </div>
+    </section>
+
+    <!-- ─── TAB: SKILL TRACKER ─── -->
+    <section class="tab-panel" id="tab-skills">
+      <header class="page-header">
+        <h1 class="page-title">📈 Skill Tracker</h1>
+        <p class="page-subtitle">Track your progress across all target skills</p>
+      </header>
+
+      <div class="skills-intro-card">
+        <p>Update your skill levels honestly. The tracker uses these to prioritize your daily content and suggest next learning steps.</p>
+      </div>
+
+      <div class="skills-grid" id="skillsGrid">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="skills-chart-section">
+        <h2>Skill Radar Overview</h2>
+        <canvas id="skillRadar" width="400" height="400"></canvas>
+      </div>
+    </section>
+
+    <!-- ─── TAB: ROADMAP ─── -->
+    <section class="tab-panel" id="tab-roadmap">
+      <header class="page-header">
+        <h1 class="page-title">🗺️ 24-Month Master Roadmap</h1>
+        <p class="page-subtitle">Month-by-month plan to become a top candidate for German automotive roles</p>
+      </header>
+      <div class="roadmap-legend">
+        <span class="legend-item foundation">Foundation</span>
+        <span class="legend-item intermediate">Intermediate</span>
+        <span class="legend-item advanced">Advanced</span>
+        <span class="legend-item applications">Applications</span>
+      </div>
+      <div class="roadmap-timeline" id="roadmapTimeline">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ─── TAB: GERMANY PREP ─── -->
+    <section class="tab-panel" id="tab-germany">
+      <header class="page-header">
+        <h1 class="page-title">🇩🇪 Germany Preparation Hub</h1>
+        <p class="page-subtitle">Everything you need to study, intern, and work in German automotive</p>
+      </header>
+      <div id="germanyContent"><!-- Populated by JS --></div>
+    </section>
+
+    <!-- ─── TAB: COMPANIES ─── -->
+    <section class="tab-panel" id="tab-companies">
+      <header class="page-header">
+        <h1 class="page-title">🏭 Target Companies</h1>
+        <p class="page-subtitle">German automotive & tech companies — profiles, hiring focus, key skills</p>
+      </header>
+      <div class="companies-grid" id="companiesGrid"><!-- Populated by JS --></div>
+    </section>
+
+    <!-- ─── TAB: SOURCES ─── -->
+    <section class="tab-panel" id="tab-sources">
+      <header class="page-header">
+        <h1 class="page-title">🔗 Learning Sources & Resources</h1>
+        <p class="page-subtitle">Curated feeds, journals, GitHub repos, and communities</p>
+      </header>
+      <div id="sourcesContent"><!-- Populated by JS --></div>
+    </section>
+
+    <!-- ─── TAB: WEEKLY DEEP DIVE ─── -->
+    <section class="tab-panel" id="tab-weekly">
+      <header class="page-header">
+        <h1 class="page-title">📅 Weekly Deep Dive</h1>
+        <p class="page-subtitle">Technology roadmap · Company analysis · EV breakdown · Engineering case study</p>
+      </header>
+      <div id="weeklyDiveContent"><!-- Populated by JS --></div>
+    </section>
+
+  </main>
+
+  <!-- PWA Install Banner -->
+  <div class="pwa-install-bar" id="pwaInstallBar" style="display:none">
+    <div>
+      <p>⚡ Add to your phone!</p>
+      <small>Works offline • No app store needed</small>
+    </div>
+    <button class="btn-pwa-install" id="pwaInstallBtn">Install App</button>
+    <button class="btn-pwa-dismiss" onclick="document.getElementById('pwaInstallBar').style.display='none'" aria-label="Dismiss">✕</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/flashcards.js"></script>
+  <script src="assets/js/skills.js"></script>
+  <script src="assets/js/roadmap.js"></script>
+  <script src="assets/js/germany.js"></script>
+  <script src="assets/js/companies.js"></script>
+  <script src="assets/js/sources.js"></script>
+  <script src="assets/js/weekly.js"></script>
+  <script src="assets/js/report.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <!-- PWA Service Worker & Install Prompt -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const bar = document.getElementById('pwaInstallBar');
+      if (bar) bar.style.display = 'flex';
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('pwaInstallBtn');
+      if (btn) btn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('pwaInstallBar').style.display = 'none';
+      });
+    });
+    window.addEventListener('appinstalled', () => {
+      const bar = document.getElementById('pwaInstallBar');
+      if (bar) bar.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

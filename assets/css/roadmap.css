@@ -1,0 +1,111 @@
+/* ══════════════════════════════════════════════
+   24-Month Roadmap Styles — Light Theme
+   ══════════════════════════════════════════════ */
+.roadmap-legend {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px;
+}
+.legend-item {
+  font-size: 12px; font-weight: 700; padding: 5px 14px;
+  border-radius: 99px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.legend-item.foundation   { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.legend-item.intermediate { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.legend-item.advanced     { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+.legend-item.applications { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+
+.roadmap-timeline { display: flex; flex-direction: column; gap: 16px; }
+
+.phase-block {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; transition: var(--transition);
+  box-shadow: var(--shadow-card);
+}
+.phase-block:hover { box-shadow: 0 6px 24px rgba(67,97,238,0.12); }
+
+.phase-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; cursor: pointer; user-select: none;
+  transition: var(--transition);
+}
+.phase-header:hover { background: #f8f9ff; }
+
+.phase-num {
+  font-size: 11px; font-weight: 800; min-width: 36px; height: 36px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  letter-spacing: 0.05em;
+}
+.phase-foundation   .phase-num { background: #fef3c7; color: #92400e; border: 2px solid #fde68a; }
+.phase-intermediate .phase-num { background: #dbeafe; color: #1d4ed8; border: 2px solid #bfdbfe; }
+.phase-advanced     .phase-num { background: #d1fae5; color: #065f46; border: 2px solid #a7f3d0; }
+.phase-applications .phase-num { background: #ede9fe; color: #5b21b6; border: 2px solid #c4b5fd; }
+
+.phase-title-group { flex: 1; }
+.phase-title  { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.phase-months { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.phase-chevron { font-size: 14px; color: var(--text-muted); transition: transform 0.25s ease; }
+.phase-block.open .phase-chevron { transform: rotate(180deg); }
+
+.phase-body { display: none; padding: 0 20px 20px; }
+.phase-block.open .phase-body { display: block; }
+
+.phase-overview {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+  padding: 12px 0 16px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+}
+
+.months-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+
+.month-card {
+  background: #f8faff; border-radius: var(--radius-sm);
+  padding: 14px; border: 1px solid var(--border); transition: var(--transition);
+}
+.month-card:hover { border-color: var(--accent-ev); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.month-label {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; margin-bottom: 8px; color: var(--text-muted);
+}
+.month-focus {
+  font-size: 13px; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 8px; line-height: 1.3;
+}
+.month-tasks { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.month-tasks li {
+  font-size: 12px; color: var(--text-secondary);
+  padding-left: 14px; position: relative; line-height: 1.4;
+}
+.month-tasks li::before { content: '✦'; position: absolute; left: 0; font-size: 8px; top: 3px; }
+.phase-foundation   .month-tasks li::before { color: #f59e0b; }
+.phase-intermediate .month-tasks li::before { color: #4361ee; }
+.phase-advanced     .month-tasks li::before { color: #06d6a0; }
+.phase-applications .month-tasks li::before { color: #7209b7; }
+
+.month-milestone {
+  margin-top: 10px; font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 99px; display: inline-block;
+}
+.phase-foundation   .month-milestone { background: rgba(255,179,0,0.1);  color: #ffb300; }
+.phase-intermediate .month-milestone { background: rgba(0,212,255,0.1);  color: #00d4ff; }
+.phase-advanced     .month-milestone { background: rgba(0,230,118,0.1);  color: #00e676; }
+.phase-applications .month-milestone { background: rgba(124,77,255,0.1); color: #7c4dff; }
+
+.phase-goals {
+  margin-top: 16px; padding: 14px;
+  background: var(--bg-secondary); border-radius: var(--radius-sm);
+  border-left: 3px solid;
+}
+.phase-foundation   .phase-goals { border-color: #ffb300; }
+.phase-intermediate .phase-goals { border-color: #00d4ff; }
+.phase-advanced     .phase-goals { border-color: #00e676; }
+.phase-applications .phase-goals { border-color: #7c4dff; }
+.phase-goals-title { font-size: 12px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+.phase-foundation   .phase-goals-title { color: #ffb300; }
+.phase-intermediate .phase-goals-title { color: #00d4ff; }
+.phase-advanced     .phase-goals-title { color: #00e676; }
+.phase-applications .phase-goals-title { color: #7c4dff; }
+.phase-goals-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.phase-goals-list li { font-size: 12px; color: var(--text-secondary); padding-left: 14px; position: relative; line-height: 1.4; }
+.phase-goals-list li::before { content: '▸'; position: absolute; left: 0; }
+.phase-foundation   .phase-goals-list li::before { color: #ffb300; }
+.phase-intermediate .phase-goals-list li::before { color: #00d4ff; }
+.phase-advanced     .phase-goals-list li::before { color: #00e676; }
+.phase-applications .phase-goals-list li::before { color: #7c4dff; }
